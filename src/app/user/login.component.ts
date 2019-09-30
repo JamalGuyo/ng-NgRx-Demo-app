@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 
 // NGRX
 import { Store, select } from '@ngrx/store';
+import * as fromRoot from '../state/app.state';
 
 @Component({
   templateUrl: './login.component.html',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private store: Store<any>
+    private store: Store<fromRoot.State>
   ) {}
 
   ngOnInit(): void {
