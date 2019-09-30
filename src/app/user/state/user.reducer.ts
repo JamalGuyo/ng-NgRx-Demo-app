@@ -2,7 +2,7 @@ export interface UserState {
   maskUserName: boolean;
 }
 
-const initialState = {
+const initialState: UserState = {
   maskUserName: true
 };
 
