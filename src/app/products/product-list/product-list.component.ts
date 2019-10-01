@@ -25,7 +25,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
-  sub: Subscription;
 
   constructor(
     private productService: ProductService,
@@ -33,9 +32,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.sub = this.productService.selectedProductChanges$.subscribe(
-      selectedProduct => (this.selectedProduct = selectedProduct)
-    );
+    // TODO: unsubscribe
+    this.store
+      .pipe(select(fromProduct.getCurrentProduct))
+      .subscribe(currentProduct => (this.selectedProduct = currentProduct));
 
     this.productService.getProducts().subscribe({
       next: (products: Product[]) => (this.products = products),
@@ -50,19 +50,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 
   checkChanged(value: boolean): void {
     this.store.dispatch(new productActions.ToggleProductCode(value));
   }
 
   newProduct(): void {
-    this.productService.changeSelectedProduct(this.productService.newProduct());
+    this.store.dispatch(new productActions.InitializeCurrentProduct());
   }
 
   productSelected(product: Product): void {
-    this.productService.changeSelectedProduct(product);
+    this.store.dispatch(new productActions.SetCurrentProduct(product));
   }
 }

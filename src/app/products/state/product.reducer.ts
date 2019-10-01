@@ -50,6 +50,27 @@ export function reducer(
         ...state,
         showProductCode: action.payload
       };
+    case ProductActionTypes.SetCurrentProduct:
+      return {
+        ...state,
+        currentProduct: { ...action.payload }
+      };
+    case ProductActionTypes.InitializeCurrentProduct:
+      return {
+        ...state,
+        currentProduct: {
+          id: 0,
+          productName: '',
+          productCode: 'New',
+          description: '',
+          starRating: 0
+        }
+      };
+    case ProductActionTypes.ClearCurrentProduct:
+      return {
+        ...state,
+        currentProduct: null
+      };
     default:
       return state;
   }
