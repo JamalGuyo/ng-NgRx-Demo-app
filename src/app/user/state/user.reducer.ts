@@ -1,3 +1,4 @@
+import { UserActions, UserActionTypes } from './user.action';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 // strong-typing
@@ -19,9 +20,9 @@ export const getMaskUserName = createSelector(
 );
 
 // reducer
-export function reducer(state = initialState, action): UserState {
+export function reducer(state = initialState, action: UserActions): UserState {
   switch (action.type) {
-    case 'MASK_USER_NAME':
+    case UserActionTypes.MaskUserName:
       return {
         ...state,
         maskUserName: action.payload
