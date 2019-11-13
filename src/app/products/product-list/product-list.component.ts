@@ -9,6 +9,7 @@ import { ProductService } from '../product.service';
 import { Store, select } from '@ngrx/store';
 import * as fromProduct from '../state/product.reducer';
 import * as productActions from '../state/product.action';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'pm-product-list',
@@ -17,7 +18,7 @@ import * as productActions from '../state/product.action';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Products';
-  errorMessage: string;
+  errorMessage$: Observable<string>;
 
   displayCode: boolean;
 
@@ -25,6 +26,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
+
+  // unsubscribe from store
+  componentActive = true;
 
   constructor(
     private productService: ProductService,
@@ -34,8 +38,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // TODO: unsubscribe
     this.store
-      .pipe(select(fromProduct.getCurrentProduct))
+      .pipe(select(fromProduct.getCurrentProduct),
+        takeWhile(() => this.componentActive))
       .subscribe(currentProduct => (this.selectedProduct = currentProduct));
+
+    this.errorMessage$ = this.store.pipe(select(fromProduct.getError));
 
     this.store.dispatch(new productActions.Load());
 
@@ -47,13 +54,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     // TODO: unsubscribe
     this.store
-      .pipe(select(fromProduct.getShowProductCode))
+      .pipe(select(fromProduct.getShowProductCode),
+        takeWhile(() => this.componentActive))
       .subscribe(showProductCode => {
         this.displayCode = showProductCode;
       });
   }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    this.componentActive = false;
+  }
 
   checkChanged(value: boolean): void {
     this.store.dispatch(new productActions.ToggleProductCode(value));
