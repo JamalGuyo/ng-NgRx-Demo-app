@@ -3,15 +3,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
-import { Product } from '../product';
-import { ProductService } from '../product.service';
-import { GenericValidator } from '../../shared/generic-validator';
-import { NumberValidators } from '../../shared/number.validator';
+import { Product } from '../../product';
+import { ProductService } from '../../product.service';
+import { GenericValidator } from '../../../shared/generic-validator';
+import { NumberValidators } from '../../../shared/number.validator';
 
 // NGRX
 import { Store, select } from '@ngrx/store';
-import * as productActions from '../state/product.action';
-import * as fromProduct from '../state/product.reducer';
+import * as productActions from '../../state/product.action';
+import * as fromProduct from '../../state/product.reducer';
 
 @Component({
   selector: 'pm-product-edit',
