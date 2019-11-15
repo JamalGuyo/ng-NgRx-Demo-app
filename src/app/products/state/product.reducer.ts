@@ -70,16 +70,19 @@ export function reducer(
   action: ProductActions
 ): ProductState {
   switch (action.type) {
+    // TOGGLE PRODUCT CODE
     case ProductActionTypes.ToggleProductCode:
       return {
         ...state,
         showProductCode: action.payload
       };
+    // SELECT A PRODUCT FROM STORE TO EDIT OR DELETE
     case ProductActionTypes.SetCurrentProduct:
       return {
         ...state,
         currentProductId: action.payload.id
       };
+    // INITIALIZE A FORM TO CREATE NEW PRODUCT
     case ProductActionTypes.InitializeCurrentProduct:
       return {
         ...state,
@@ -90,6 +93,7 @@ export function reducer(
         ...state,
         currentProductId: null
       };
+    // LOAD PRODUCTS FROME EXTERNAL SOURCE
     case ProductActionTypes.LoadSuccess:
       return {
         ...state,
@@ -102,6 +106,7 @@ export function reducer(
         products: [],
         error: action.payload
       };
+    // UPDATE PRODUCT IN THE STORE
     case ProductActionTypes.UpdateProductSuccess:
       const updatedProducts = state.products.map(
         item => action.payload.id === item.id ? action.payload : item
