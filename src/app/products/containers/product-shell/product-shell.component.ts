@@ -14,6 +14,7 @@ export class ProductShellComponent implements OnInit {
   displayCode$: Observable<boolean>;
   products$: Observable<Product[]>;
   selectedProduct$: Observable<Product> | null;
+  currentProduct$: Observable<Product>;
 
   constructor(private store: Store<fromProduct.State>) { }
 
@@ -23,6 +24,7 @@ export class ProductShellComponent implements OnInit {
     this.errorMessage$ = this.store.pipe(select(fromProduct.getError));
     this.products$ = this.store.pipe(select(fromProduct.getProducts));
     this.displayCode$ = this.store.pipe(select(fromProduct.getShowProductCode));
+    this.currentProduct$ = this.store.pipe(select(fromProduct.getCurrentProduct));
   }
 
   checkChanged(value: boolean): void {
@@ -35,5 +37,20 @@ export class ProductShellComponent implements OnInit {
 
   productSelected(product: Product): void {
     this.store.dispatch(new productActions.SetCurrentProduct(product));
+  }
+
+  deleteProduct(product: Product): void {
+    this.store.dispatch(new productActions.DeleteProduct(product.id));
+  }
+
+  clearProduct(): void {
+    this.store.dispatch(new productActions.ClearCurrentProduct());
+  }
+  saveProduct(product: Product): void {
+    this.store.dispatch(new productActions.CreateProduct(product));
+  }
+
+  updateProduct(product: Product): void {
+    this.store.dispatch(new productActions.UpdateProduct(product));
   }
 }
