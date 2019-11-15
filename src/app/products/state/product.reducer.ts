@@ -110,10 +110,36 @@ export function reducer(
         ...state, products: updatedProducts,
         currentProductId: action.payload.id,
         error: ''
-      }
-        ;
+      };
     case ProductActionTypes.UpdateProductFail:
-      return { ...state, error: action.payload }
+      return { ...state, error: action.payload };
+
+    // CREATE PRODUCT SUCCESS OR FAIL
+    case ProductActionTypes.CreateProductSuccess:
+      return {
+        ...state,
+        products: [...state.products, action.payload],
+        currentProductId: action.payload.id,
+        error: ''
+      };
+    case ProductActionTypes.CreateProductFail:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // DELETE PRODUCT SUCCESS OR FAIL
+    case ProductActionTypes.DeleteProductSuccess:
+      return {
+        ...state,
+        products: [...state.products.filter(product => product.id !== action.payload)],
+        currentProductId: null,
+        error: ''
+      };
+    case ProductActionTypes.DeleteProductFail:
+      return {
+        ...state,
+        error: action.payload
+      };
     default:
       return state;
   }
