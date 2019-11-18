@@ -11,7 +11,7 @@ import { NumberValidators } from '../../../shared/number.validator';
 // NGRX
 import { Store, select } from '@ngrx/store';
 import * as productActions from '../../state/product.action';
-import * as fromProduct from '../../state/product.reducer';
+import * as fromProduct from '../../state';
 
 @Component({
   selector: 'pm-product-edit',
